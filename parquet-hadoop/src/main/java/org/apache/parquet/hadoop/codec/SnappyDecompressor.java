@@ -101,7 +101,8 @@ public class SnappyDecompressor implements Decompressor {
     SnappyUtil.validateBuffer(buffer, off, len);
 
     if (inputBuffer.capacity() - inputBuffer.position() < len) {
-      ByteBuffer newBuffer = ByteBuffer.allocateDirect(inputBuffer.position() + len);
+      int maxSize = Math.max(inputBuffer.position() * 2 , inputBuffer.position() + len);
+      ByteBuffer newBuffer = ByteBuffer.allocateDirect(maxSize);
       inputBuffer.rewind();
       newBuffer.put(inputBuffer);
       ByteBuffer oldBuffer = inputBuffer;
